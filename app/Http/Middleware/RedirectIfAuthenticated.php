@@ -18,8 +18,13 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        //Prevent redirect to login page if user is authenticated
         if (Auth::guard($guard)->check()) {
-            return redirect(RouteServiceProvider::HOME);
+            if($guard == 'admin'){
+                return redirect(RouteServiceProvider::ADMIN);
+            }else{
+                return redirect(RouteServiceProvider::HOME);
+            }
         }
 
         return $next($request);
